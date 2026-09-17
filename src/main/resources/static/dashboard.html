@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Dashboard · MarketAnalyzer Pro</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #F1F5F9;
+            color: #0F172A;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0F172A;
+            text-decoration: none;
+        }
+
+        .navbar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .navbar-brand span {
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: #64748B;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: #0F172A;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.4rem 1rem;
+            background: #F1F5F9;
+            border-radius: 50px;
+        }
+
+        .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4F46E5, #7C3AED);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0F172A;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+        }
+
+        .dashboard-header p {
+            color: #64748B;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-card .stat-icon.purple { background: #EEF2FF; color: #4F46E5; }
+        .stat-card .stat-icon.green { background: #ECFDF5; color: #10B981; }
+        .stat-card .stat-icon.orange { background: #FFFBEB; color: #F59E0B; }
+        .stat-card .stat-icon.red { background: #FEF2F2; color: #EF4444; }
+
+        .stat-card .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0F172A;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: #64748B;
+            margin-top: 0.2rem;
+        }
+
+        .activity-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #E2E8F0;
+        }
+
+        .activity-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #F1F5F9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4F46E5;
+        }
+
+        .activity-item .activity-content {
+            flex: 1;
+        }
+
+        .activity-item .activity-content .title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .activity-item .activity-content .desc {
+            font-size: 0.8rem;
+            color: #64748B;
+        }
+
+        .activity-item .activity-time {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #DC2626;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logout-btn:hover {
+            background: #FECACA;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #0F172A;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem 1rem;
+                flex-wrap: wrap;
+            }
+
+            .navbar-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 1rem 0;
+                gap: 0.8rem;
+            }
+
+            .navbar-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+        <span>MarketAnalyzer</span>
+    </a>
+    <div class="navbar-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="index.html#map-section">Market Map</a>
+        <a href="index.html#analytics">Analytics</a>
+        <a href="index.html#features">Features</a>
+        <div class="user-info">
+            <div class="avatar" id="userAvatar">JD</div>
+            <span class="name" id="userName">John Doe</span>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+</nav>
+
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Welcome back, <span id="welcomeName">John</span> 👋</h1>
+        <p>Here's an overview of your market analysis activity</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-value" id="totalAnalyses">12</div>
+            <div class="stat-label">Total Analyses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-flag"></i></div>
+            <div class="stat-value" id="activeAnalyses">3</div>
+            <div class="stat-label">Active Analyses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fas fa-store"></i></div>
+            <div class="stat-value" id="competitorsTracked">48</div>
+            <div class="stat-label">Competitors Tracked</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="fas fa-bolt"></i></div>
+            <div class="stat-value" id="insightsCount">24</div>
+            <div class="stat-label">New Insights</div>
+        </div>
+    </div>
+
+    <div class="activity-section">
+        <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+        <div id="activityList">
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-search"></i></div>
+                <div class="activity-content">
+                    <div class="title">Market Analysis Completed</div>
+                    <div class="desc">Coffee Shop market analysis in Mumbai</div>
+                </div>
+                <div class="activity-time">2 hours ago</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-plus-circle"></i></div>
+                <div class="activity-content">
+                    <div class="title">New Competitor Added</div>
+                    <div class="desc">"Artisan Brew" added to tracking list</div>
+                </div>
+                <div class="activity-time">5 hours ago</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="activity-content">
+                    <div class="title">Report Generated</div>
+                    <div class="desc">Monthly competitive intelligence report</div>
+                </div>
+                <div class="activity-time">1 day ago</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon"><i class="fas fa-bell"></i></div>
+                <div class="activity-content">
+                    <div class="title">Alert: Market Shift Detected</div>
+                    <div class="desc">Significant rating change detected in Retail sector</div>
+                </div>
+                <div class="activity-time">2 days ago</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = (() => {
+        return `${window.location.origin}/api`;
+    })();
+
+    function checkAuth() {
+        const token = localStorage.getItem('auth_token');
+        const userJson = localStorage.getItem('user');
+
+        if (!token || !userJson) {
+            window.location.href = 'login.html';
+            return null;
+        }
+        try {
+            return JSON.parse(userJson);
+        } catch (e) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+            return null;
+        }
+    }
+
+    function loadUserData() {
+        const user = checkAuth();
+        if (!user) return;
+
+        const welcomeName = document.getElementById('welcomeName');
+        const userName = document.getElementById('userName');
+        const userAvatar = document.getElementById('userAvatar');
+
+        if (welcomeName) welcomeName.textContent = user.firstName || 'User';
+        if (userName) userName.textContent = `${user.firstName || 'User'} ${user.lastName || ''}`.trim();
+        if (userAvatar) {
+            const initials = `${user.firstName?.[0] || 'U'}${user.lastName?.[0] || ''}`;
+            userAvatar.textContent = initials.toUpperCase();
+        }
+
+        loadStats();
+    }
+
+    async function loadStats() {
+        try {
+            const token = localStorage.getItem('auth_token');
+
+            const response = await fetch(`${API_BASE}/analysis/user`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                mode: 'cors',
+                credentials: 'include'
+            });
+
+            if (response.status === 401) {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
+
+            const contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                throw new Error('Invalid response format');
+            }
+
+            const data = await response.json();
+
+            if (Array.isArray(data)) {
+                document.getElementById('totalAnalyses').textContent = data.length || 0;
+                document.getElementById('activeAnalyses').textContent =
+                    data.filter(a => a.status === 'PROCESSING').length || 0;
+            }
+
+        } catch (error) {
+            console.warn('[Dashboard] Could not load stats:', error.message);
+        }
+    }
+
+    function handleLogout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    }
+
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        document.getElementById('navLinks').classList.toggle('active');
+    });
+
+    document.addEventListener('DOMContentLoaded', loadUserData);
+    window.handleLogout = handleLogout;
+</script>
+
+</body>
+</html>

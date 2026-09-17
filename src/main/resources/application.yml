@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: marketanalyzer-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/marketanalyzer}
+    username: ${SPRING_DATASOURCE_USERNAME:marketanalyzer}
+    password: ${SPRING_DATASOURCE_PASSWORD:marketanalyzer_dev_password}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - classpath:/public/
+        - file:./frontend/
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+server:
+  # Render provides PORT at runtime; retain 8080 for Docker and local development.
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.marketanalyzer: DEBUG
+
+app:
+  auth:
+    # Configure these in Render for a public deployment. Defaults keep local setup simple.
+    demo-email: ${APP_AUTH_DEMO_EMAIL:demo@marketanalyzer.com}
+    demo-password: ${APP_AUTH_DEMO_PASSWORD:demo123}

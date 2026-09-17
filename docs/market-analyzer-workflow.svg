@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">MarketAnalyzer application workflow</title>
+  <desc id="desc">A flowchart showing the browser frontend, Spring Boot backend, PostgreSQL database running in Docker, and offline Python model-training assets.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#334155"/></marker>
+    <marker id="dashed-arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#64748b"/></marker>
+    <style>
+      .heading { font: 700 34px Arial, sans-serif; fill: #0f172a; }
+      .subheading { font: 400 18px Arial, sans-serif; fill: #475569; }
+      .node-title { font: 700 22px Arial, sans-serif; fill: #0f172a; }
+      .node-text { font: 400 17px Arial, sans-serif; fill: #334155; }
+      .small { font: 400 15px Arial, sans-serif; fill: #475569; }
+      .label { font: 600 16px Arial, sans-serif; fill: #334155; }
+      .container { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+      .frontend { fill: #dbeafe; stroke: #2563eb; stroke-width: 2.5; }
+      .backend { fill: #dcfce7; stroke: #16a34a; stroke-width: 2.5; }
+      .database { fill: #fef3c7; stroke: #d97706; stroke-width: 2.5; }
+      .docker { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2.5; }
+      .offline { fill: #f1f5f9; stroke: #64748b; stroke-width: 2; stroke-dasharray: 8 6; }
+      .arrow { fill: none; stroke: #334155; stroke-width: 3; marker-end: url(#arrow); }
+      .dash { fill: none; stroke: #64748b; stroke-width: 2.5; stroke-dasharray: 9 7; marker-end: url(#dashed-arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="800" y="58" text-anchor="middle" class="heading">MarketAnalyzer: Complete Application Workflow</text>
+  <text x="800" y="87" text-anchor="middle" class="subheading">HTML/CSS/JavaScript frontend • Java Spring Boot backend • PostgreSQL persistence</text>
+
+  <rect x="50" y="128" width="290" height="155" rx="18" class="frontend"/>
+  <text x="195" y="174" text-anchor="middle" class="node-title">1. User Browser</text>
+  <text x="195" y="210" text-anchor="middle" class="node-text">HTML • CSS • JavaScript</text>
+  <text x="195" y="238" text-anchor="middle" class="small">Login, dashboard, analysis form</text>
+
+  <rect x="430" y="118" width="665" height="425" rx="22" class="container"/>
+  <text x="762" y="157" text-anchor="middle" class="node-title">2. Spring Boot Application (Java)</text>
+  <text x="762" y="184" text-anchor="middle" class="small">Serves the static frontend and handles all API requests</text>
+
+  <rect x="472" y="218" width="255" height="120" rx="15" class="backend"/>
+  <text x="600" y="260" text-anchor="middle" class="node-title">REST Controllers</text>
+  <text x="600" y="290" text-anchor="middle" class="node-text">Auth • Analysis • Prediction</text>
+  <text x="600" y="316" text-anchor="middle" class="small">JSON request / response</text>
+
+  <rect x="800" y="218" width="255" height="120" rx="15" class="backend"/>
+  <text x="927" y="260" text-anchor="middle" class="node-title">Java Services</text>
+  <text x="927" y="290" text-anchor="middle" class="node-text">AuthService • AnalysisService</text>
+  <text x="927" y="316" text-anchor="middle" class="small">Business logic and validation</text>
+
+  <rect x="630" y="385" width="305" height="116" rx="15" class="backend"/>
+  <text x="782" y="427" text-anchor="middle" class="node-title">PredictionService</text>
+  <text x="782" y="457" text-anchor="middle" class="node-text">Java heuristic scorer</text>
+  <text x="782" y="483" text-anchor="middle" class="small">Current runtime prediction engine</text>
+
+  <rect x="1190" y="128" width="345" height="385" rx="22" class="docker"/>
+  <text x="1362" y="168" text-anchor="middle" class="node-title">3. Docker Desktop</text>
+  <text x="1362" y="195" text-anchor="middle" class="small">Runs the database locally</text>
+  <rect x="1230" y="230" width="265" height="205" rx="16" class="database"/>
+  <text x="1362" y="274" text-anchor="middle" class="node-title">PostgreSQL</text>
+  <text x="1362" y="307" text-anchor="middle" class="node-text">app_users</text>
+  <text x="1362" y="335" text-anchor="middle" class="node-text">user_sessions</text>
+  <text x="1362" y="363" text-anchor="middle" class="node-text">analyses</text>
+  <text x="1362" y="405" text-anchor="middle" class="small">Persistent data storage</text>
+
+  <path d="M340 205 H470" class="arrow"/>
+  <text x="405" y="190" text-anchor="middle" class="label">API calls</text>
+  <path d="M470 248 H345" class="arrow"/>
+  <text x="405" y="270" text-anchor="middle" class="label">Results</text>
+  <path d="M728 278 H798" class="arrow"/>
+  <path d="M927 338 V383" class="arrow"/>
+  <path d="M1056 278 H1228" class="arrow"/>
+  <text x="1142" y="261" text-anchor="middle" class="label">Save / read data</text>
+  <path d="M1228 318 H1057" class="arrow"/>
+  <text x="1142" y="345" text-anchor="middle" class="label">Stored data</text>
+
+  <rect x="80" y="625" width="615" height="184" rx="18" class="offline"/>
+  <text x="387" y="669" text-anchor="middle" class="node-title">Offline ML Training Assets — Not Used at Runtime</text>
+  <text x="387" y="705" text-anchor="middle" class="node-text">Python Jupyter notebook: Untitled6.ipynb</text>
+  <text x="387" y="734" text-anchor="middle" class="node-text">Saved artifacts: random_forest_model.pkl and scaler.pkl</text>
+  <text x="387" y="770" text-anchor="middle" class="small">They were created with Python, but Spring Boot does not load or execute them.</text>
+
+  <rect x="840" y="625" width="665" height="184" rx="18" class="offline"/>
+  <text x="1172" y="669" text-anchor="middle" class="node-title">Future Optional Upgrade</text>
+  <text x="1172" y="707" text-anchor="middle" class="node-text">Export the trained Python model to PMML or ONNX</text>
+  <text x="1172" y="738" text-anchor="middle" class="node-text">Then replace the Java heuristic scorer with a Java-compatible model runtime</text>
+  <text x="1172" y="774" text-anchor="middle" class="small">This is a planned integration path, not part of the current running application.</text>
+
+  <path d="M695 716 H838" class="dash"/>
+  <text x="766" y="699" text-anchor="middle" class="label">optional export</text>
+  <path d="M1173 625 V505 H938" class="dash"/>
+  <text x="1092" y="528" text-anchor="middle" class="label">future replacement</text>
+</svg>

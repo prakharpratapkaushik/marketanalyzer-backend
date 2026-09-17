@@ -1,0 +1,17 @@
+population_density
+youth_ratio
+male_ratio
+urban_score
+income_proxy
+demand_indicator
+affluence_score
+digital_adoption
+development_index
+business_factor_youth
+business_factor_urban
+business_factor_income
+price_factor
+audience_factor
+competitor_count
+avg_rating
+competition_density

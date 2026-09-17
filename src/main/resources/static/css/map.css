@@ -1,0 +1,119 @@
+/* ============================================================
+   MAP CSS - Leaflet Map Styles
+   ============================================================ */
+
+.map-wrapper {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    background: #e8ecf1;
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background: #e8ecf1;
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.leaflet-container {
+    touch-action: none !important;
+    cursor: grab !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.leaflet-container:active {
+    cursor: grabbing !important;
+}
+
+.leaflet-control-zoom {
+    z-index: 1000 !important;
+}
+
+.leaflet-control-attribution {
+    font-size: 9px !important;
+    opacity: 0.7 !important;
+    z-index: 1000 !important;
+}
+
+.map-overlay {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    pointer-events: none;
+}
+
+.map-overlay .live-dot {
+    width: 8px;
+    height: 8px;
+    background: #EF4444;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+.map-overlay .timestamp {
+    font-weight: 400;
+    color: var(--gray-500);
+    font-size: 0.75rem;
+}
+
+/* Custom Marker Styles */
+.custom-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+.custom-marker div {
+    transition: transform 0.3s ease;
+}
+
+.custom-marker div:hover {
+    transform: scale(1.15);
+}
+
+.map-analysis-panel {
+    margin-top: 1rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+}
+
+.map-analysis-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.map-analysis-heading .subtitle { color: var(--gray-500); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.map-analysis-heading h3 { margin: 0.2rem 0 0; font-size: 1.2rem; }
+.map-analysis-status { color: var(--primary); font-size: 0.8rem; font-weight: 700; text-align: right; }
+.map-score-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.65rem; margin: 1rem 0; }
+.map-score-grid > div { background: var(--gray-100); border-radius: 8px; padding: 0.7rem; text-align: center; }
+.map-score-grid strong { display: block; color: var(--primary); font-size: 1rem; }
+.map-score-grid span { color: var(--gray-500); font-size: 0.7rem; }
+.map-insights { border-top: 1px solid var(--gray-200); padding-top: 0.85rem; }
+.map-insights h4 { margin: 0 0 0.45rem; font-size: 0.92rem; }
+.map-insights h4 i { color: #f59e0b; }
+.map-insights ul { margin: 0; padding-left: 1.2rem; color: var(--gray-600); font-size: 0.82rem; line-height: 1.5; }
+
+@media (max-width: 700px) {
+    .map-analysis-heading { align-items: flex-start; flex-direction: column; }
+    .map-analysis-status { text-align: left; }
+    .map-score-grid { grid-template-columns: repeat(2, 1fr); }
+}

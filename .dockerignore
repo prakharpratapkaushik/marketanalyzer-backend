@@ -1,0 +1,11 @@
+.git
+.idea
+.mvn
+target
+build-maven-repository
+data
+logs
+output
+.env
+.env.*
+README.md
